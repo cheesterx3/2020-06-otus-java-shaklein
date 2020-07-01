@@ -1,3 +1,1 @@
-OTUS Java course
-
-Student: Alexander Shaklein
+Alexander Shaklein
