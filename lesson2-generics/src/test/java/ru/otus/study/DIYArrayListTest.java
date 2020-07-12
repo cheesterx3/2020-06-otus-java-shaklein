@@ -202,5 +202,4 @@ public class DIYArrayListTest {
         assertThat(list.isEmpty()).isTrue();
     }
 
-
 }
