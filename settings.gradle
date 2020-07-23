@@ -10,4 +10,4 @@
 rootProject.name = 'otus-java'
 include 'hw01-gradle'
 include 'lesson2-generics'
-
+include 'lesson6-reflection'
