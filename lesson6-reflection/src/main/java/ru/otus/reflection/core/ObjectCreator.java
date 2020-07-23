@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface ObjectCreator {
     /**
      * Создание экземпляра класса
+     *
      * @param objectClass класс
      * @return созданный экземляр класса. В случае ошибки создания экземпляра вернётся {@code Optional.empty()}
      */

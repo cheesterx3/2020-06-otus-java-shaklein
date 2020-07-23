@@ -6,13 +6,13 @@ package ru.otus.reflection.core;
 public interface TestPhaseExecutor {
     /**
      * Выполнение фазы тестирования
+     *
      * @param object экземпляр объекта
      * @return результат запуска фазы
      */
     DetailTestInfo execute(Object object);
 
     /**
-     *
      * @return наименование фазы
      */
     String getName();
