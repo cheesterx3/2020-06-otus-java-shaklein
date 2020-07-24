@@ -38,12 +38,12 @@ public class TestLauncherImpl implements TestLauncher {
         Objects.requireNonNull(testClass, "Test class cannot be null");
         final var classProcessor = classProcessorFactory.createProcessor(testClass);
         if (nonNull(classProcessor) && classProcessor.hasTestExecutor()) {
-            return executeTest(classProcessor, testClass);
+            return executeWithProcessor(classProcessor, testClass);
         }
         return SummaryInfo.empty();
     }
 
-    private SummaryInfo executeTest(TestClassProcessor classProcessor, Class<?> testClass) {
+    private SummaryInfo executeWithProcessor(TestClassProcessor classProcessor, Class<?> testClass) {
         final var testPhaseExecutors = classProcessor.testExecutors();
         if (nonNull(testPhaseExecutors)) {
             final var detailTestInfos = collectDetails(classProcessor, testClass, testPhaseExecutors);
@@ -56,13 +56,13 @@ public class TestLauncherImpl implements TestLauncher {
                                                 Class<?> testClass,
                                                 Collection<TestPhaseExecutor> testPhaseExecutors) {
         return testPhaseExecutors.stream()
-                .map(method -> execute(classProcessor, testClass, method))
+                .map(method -> executeSingleTest(classProcessor, testClass, method))
                 .collect(Collectors.toList());
     }
 
-    private DetailTestInfo execute(TestClassProcessor classProcessor,
-                                   Class<?> testClass,
-                                   TestPhaseExecutor testExecutor) {
+    private DetailTestInfo executeSingleTest(TestClassProcessor classProcessor,
+                                             Class<?> testClass,
+                                             TestPhaseExecutor testExecutor) {
         final var objectOptional = objectCreator.createObject(testClass);
         if (objectOptional.isPresent()) {
             final var testExecutable = TestExecutable.builder(objectOptional.get(), testExecutor)
