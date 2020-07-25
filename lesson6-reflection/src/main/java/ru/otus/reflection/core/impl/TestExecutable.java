@@ -40,6 +40,7 @@ public class TestExecutable {
             }
             return testInfo;
         }
+        executeAfterMethods();
         return beforeFailed.get(0);// Берём первый же попавшийся сбой и возвращаем его результат
     }
 
@@ -55,6 +56,10 @@ public class TestExecutable {
                 .map(testPhaseExecutor -> testPhaseExecutor.execute(object))
                 .filter(detailTestInfo -> !detailTestInfo.isSuccess())
                 .collect(Collectors.toList());
+    }
+
+    private void executeAfterMethods() {
+        afterMethods.forEach(testPhaseExecutor -> testPhaseExecutor.execute(object));
     }
 
     static class TestExecutableBuilder {

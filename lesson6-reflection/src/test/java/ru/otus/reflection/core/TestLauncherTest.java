@@ -124,6 +124,18 @@ class TestLauncherTest {
     }
 
     @Test
+    @DisplayName("должен выполнять пост-исполнитель, если пре-исполнитель выполняется с ошибкой")
+    void shouldExecuteAfterTestsIfBeforeFailures() {
+        final ObjectCreator objectCreator = mock(ObjectCreator.class);
+        final MultipleTestsMockTest testsMockTest = spy(new MultipleTestsMockTest());
+        when(objectCreator.createObject(MultipleTestsMockTest.class)).thenReturn(Optional.of(testsMockTest));
+        doThrow(new AssertionError("")).when(testsMockTest).beforeTest();
+        final TestLauncher testLauncher = new TestLauncherImpl(objectCreator);
+        testLauncher.executeTest(MultipleTestsMockTest.class);
+        verify(testsMockTest, times(3)).afterTest();
+    }
+
+    @Test
     @DisplayName("должен возврщать сбой по всем тест-методам, если пост-исполнитель выполняется с ошибкой")
     void shouldExecuteTestsIfAfterFailures() {
         final ObjectCreator objectCreator = mock(ObjectCreator.class);
