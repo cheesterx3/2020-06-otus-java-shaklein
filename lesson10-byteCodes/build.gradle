@@ -24,10 +24,10 @@ test {
 }
 
 jar {
-    archiveBaseName.set('testLauncher')
+    archiveBaseName.set('aopLauncher')
     archiveVersion.set('0.1')
     archiveClassifier.set('')
     manifest {
-        attributes 'Main-Class': 'ru.otus.reflection.Launcher'
+        attributes 'Main-Class': 'ru.otus.bytecodes.Launcher'
     }
 }
