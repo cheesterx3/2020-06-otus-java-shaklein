@@ -11,7 +11,6 @@ import ru.otus.solid.types.CashPutStrategyType;
 import ru.otus.solid.types.CashRetrieveStrategyType;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,6 +35,8 @@ public class Launcher {
         bills.addAll(Collections.nCopies(8,BillCash.ONE_HUNDRED));
         System.out.println("Putting = " + atm.putAndReturnUnprocessed(bills, CashPutStrategyType.ALL_OR_NOTHING));
         System.out.println("atm.balance() after put = " + atm.balance());
+        atm.put(BillCash.TWO_HUNDRED);
+        System.out.println("atm.balance() after put one = " + atm.balance());
 
     }
 }

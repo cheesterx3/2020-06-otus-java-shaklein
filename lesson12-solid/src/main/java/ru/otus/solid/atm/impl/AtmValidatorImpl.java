@@ -5,10 +5,11 @@ import ru.otus.solid.exceptions.AtmException;
 import ru.otus.solid.types.BillCash;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.IntSupplier;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.joining;
@@ -47,12 +48,9 @@ public class AtmValidatorImpl implements AtmValidator {
     }
 
     private Set<BillCash> getUnsupportedBillTypes(Iterable<BillCash> cash, Predicate<BillCash> billSupport) {
-        final Set<BillCash> unsupportedSet = new HashSet<>();
-        cash.forEach(billCash -> {
-            if (!billSupport.test(billCash))
-                unsupportedSet.add(billCash);
-        });
-        return unsupportedSet;
+        return StreamSupport.stream(cash.spliterator(),false)
+                .filter(billSupport.negate())
+                .collect(Collectors.toSet());
     }
 
     @Override

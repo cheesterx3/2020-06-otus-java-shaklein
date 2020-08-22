@@ -13,7 +13,8 @@ public class CellAtmStorageImpl implements AtmStorage {
     private final Map<BillCash, List<Cell>> storage = new EnumMap<>(BillCash.class);
 
     public CellAtmStorageImpl(Collection<BillCell> cells, AtmValidator atmValidator) {
-        this.atmValidator = atmValidator;
+        Objects.requireNonNull(cells, "Cells shouldn't be null");
+        this.atmValidator = Objects.requireNonNull(atmValidator, "Validator shouldn't be null");
         cells.forEach(cell -> storage.computeIfAbsent(cell.cashType(), billCash -> new ArrayList<>()).add(cell));
     }
 
@@ -76,9 +77,10 @@ public class CellAtmStorageImpl implements AtmStorage {
     @Override
     public int balance() {
         return storage.entrySet().stream()
-                .map(entry -> entry.getKey().total(entry.getValue().stream()
-                        .map(Cell::amount)
-                        .reduce(0, Integer::sum)))
+                .map(entry -> entry.getKey()
+                        .total(entry.getValue().stream()
+                                .map(Cell::amount)
+                                .reduce(0, Integer::sum)))
                 .reduce(0, Integer::sum);
 
     }

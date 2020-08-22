@@ -1,7 +1,5 @@
 package ru.otus.solid.atm;
 
-import ru.otus.solid.atm.CashPutStrategyFactory;
-import ru.otus.solid.atm.CashRetrieveStrategyFactory;
 import ru.otus.solid.exceptions.AtmException;
 import ru.otus.solid.types.BillCash;
 
@@ -22,6 +20,15 @@ public interface Atm {
      * @throws NullPointerException     в случае если стратегия равна null
      */
     Collection<BillCash> putAndReturnUnprocessed(Iterable<BillCash> cash, CashPutStrategyFactory strategyFactory);
+
+    /**
+     * Положить одну купюру на счёт
+     *
+     * @param cash купюра
+     * @throws IllegalArgumentException в случае если купюра - null-значение
+     * @throws AtmException             в случае если купюра не поддерживается хранилищем
+     */
+    void put(BillCash cash);
 
     /**
      * Снять средства согласно выбранной стратегии

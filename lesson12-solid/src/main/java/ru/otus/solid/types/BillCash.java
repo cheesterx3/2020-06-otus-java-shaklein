@@ -7,7 +7,7 @@ public enum BillCash implements Cash {
     TWO_THOUSAND(2000),
     ONE_THOUSAND(1000),
     FIVE_HUNDRED(500),
-    TWO_HUNDRED(500),
+    TWO_HUNDRED(200),
     ONE_HUNDRED(100);
 
     private final int nominal;

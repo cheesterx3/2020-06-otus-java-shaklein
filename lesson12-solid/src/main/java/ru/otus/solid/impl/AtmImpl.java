@@ -25,6 +25,11 @@ public class AtmImpl implements Atm {
     }
 
     @Override
+    public void put(BillCash cash) {
+        atmStorage.put(cash);
+    }
+
+    @Override
     public Collection<BillCash> getCash(int amount, CashRetrieveStrategyFactory strategyFactory) {
         Objects.requireNonNull(strategyFactory, "Strategy factory cannot be null");
         return atmStorage.get(amount, strategyFactory.createStrategy());

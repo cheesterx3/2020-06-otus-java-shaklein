@@ -39,10 +39,8 @@ class CellAtmStorageImplTest {
                 BillCellImpl.empty(BillCash.ONE_HUNDRED, CAPACITY)
         );
         putStrategy = mock(CashPutStrategy.class);
-        when(putStrategy.calcProcessable(anyCollection(), any())).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
+        when(putStrategy.calcProcessable(anyCollection(), any()))
+                .thenAnswer(invocation -> invocation.getArguments()[0]);
         retrieveStrategy = mock(CashRetrieveStrategy.class);
         storage = new CellAtmStorageImpl(billCells, validator);
     }
