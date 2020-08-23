@@ -13,13 +13,13 @@ public interface Atm {
      * Положить средства согласно выбранной стратегии
      *
      * @param cash            набор средств
-     * @param strategyFactory фабрика стратегий
+     * @param strategy стратегия зачисления
      * @return список средств корректно зачисленных в банкомат
      * @throws IllegalArgumentException в случае если в наборе купюр присутствует null-значение
      * @throws AtmException             в случае если в наборе присутствую купюры, не поддерживаемые хранилищем
      * @throws NullPointerException     в случае если стратегия равна null
      */
-    Collection<BillCash> putAndReturnUnprocessed(Iterable<BillCash> cash, CashPutStrategyFactory strategyFactory);
+    Collection<BillCash> putAndReturnUnprocessed(Iterable<BillCash> cash, CashPutStrategy strategy);
 
     /**
      * Положить одну купюру на счёт
@@ -34,14 +34,14 @@ public interface Atm {
      * Снять средства согласно выбранной стратегии
      *
      * @param amount          объём средств
-     * @param strategyFactory фабрика стратегий
+     * @param strategy      стратегия снятия
      * @return список купюр
      * @throws IllegalArgumentException в случае запроса суммы меньше или равной нулю
      * @throws AtmException             в случае если запрашиваемая сумма больше, чем есть в хранилище либо
      *                                  в случае нехватки купюр определённого номинала для выдачи полной суммы
      * @throws NullPointerException     в случае если стратегия равна null
      */
-    Collection<BillCash> getCash(int amount, CashRetrieveStrategyFactory strategyFactory);
+    Collection<BillCash> getCash(int amount, CashRetrieveStrategy strategy);
 
     /**
      * @return текущий баланс банкомата

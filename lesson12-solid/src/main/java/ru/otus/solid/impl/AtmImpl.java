@@ -1,9 +1,6 @@
 package ru.otus.solid.impl;
 
-import ru.otus.solid.atm.Atm;
-import ru.otus.solid.atm.AtmStorage;
-import ru.otus.solid.atm.CashPutStrategyFactory;
-import ru.otus.solid.atm.CashRetrieveStrategyFactory;
+import ru.otus.solid.atm.*;
 import ru.otus.solid.types.BillCash;
 
 import java.util.Collection;
@@ -19,9 +16,9 @@ public class AtmImpl implements Atm {
     }
 
     @Override
-    public Collection<BillCash> putAndReturnUnprocessed(Iterable<BillCash> cash, CashPutStrategyFactory strategyFactory) {
-        Objects.requireNonNull(strategyFactory, "Strategy factory cannot be null");
-        return atmStorage.putAll(cash, strategyFactory.createStrategy());
+    public Collection<BillCash> putAndReturnUnprocessed(Iterable<BillCash> cash, CashPutStrategy strategy) {
+        Objects.requireNonNull(strategy, "Strategy  cannot be null");
+        return atmStorage.putAll(cash, strategy);
     }
 
     @Override
@@ -30,9 +27,9 @@ public class AtmImpl implements Atm {
     }
 
     @Override
-    public Collection<BillCash> getCash(int amount, CashRetrieveStrategyFactory strategyFactory) {
-        Objects.requireNonNull(strategyFactory, "Strategy factory cannot be null");
-        return atmStorage.get(amount, strategyFactory.createStrategy());
+    public Collection<BillCash> getCash(int amount, CashRetrieveStrategy strategy) {
+        Objects.requireNonNull(strategy, "Strategy cannot be null");
+        return atmStorage.get(amount, strategy);
     }
 
     @Override

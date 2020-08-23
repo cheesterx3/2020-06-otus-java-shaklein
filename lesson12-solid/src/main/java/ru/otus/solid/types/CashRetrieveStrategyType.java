@@ -1,10 +1,12 @@
 package ru.otus.solid.types;
 
 import ru.otus.solid.atm.CashRetrieveStrategy;
-import ru.otus.solid.atm.CashRetrieveStrategyFactory;
 import ru.otus.solid.atm.impl.MinBillsCashRetrieveStrategyImpl;
 
-public enum CashRetrieveStrategyType implements CashRetrieveStrategyFactory {
+import java.util.Collection;
+import java.util.function.ToIntFunction;
+
+public enum CashRetrieveStrategyType implements CashRetrieveStrategy {
     MIN_BILLS_QUANTITY(new MinBillsCashRetrieveStrategyImpl());
 
     private final CashRetrieveStrategy strategy;
@@ -14,7 +16,7 @@ public enum CashRetrieveStrategyType implements CashRetrieveStrategyFactory {
     }
 
     @Override
-    public CashRetrieveStrategy createStrategy() {
-        return this.strategy;
+    public Collection<BillCash> retrieve(int amount, ToIntFunction<BillCash> amountRequester) {
+        return strategy.retrieve(amount,amountRequester);
     }
 }
