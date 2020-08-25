@@ -3,7 +3,9 @@ package ru.otus.solid.atm.impl;
 import ru.otus.solid.atm.CashPutStrategy;
 import ru.otus.solid.types.BillCash;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.function.ToIntFunction;
 import java.util.stream.StreamSupport;
 
@@ -16,20 +18,17 @@ public class AllOrNothingCashPutStrategyImpl implements CashPutStrategy {
 
     @Override
     public Collection<BillCash> calcProcessable(Iterable<BillCash> billCashes, ToIntFunction<BillCash> spaceRequester) {
-        final List<BillCash> overheadCashList = getOverheadCashTypes(billCashes, spaceRequester);
-        if (overheadCashList.isEmpty()) {
-            return StreamSupport.stream(billCashes.spliterator(), false)
-                    .collect(toList());
-        }
-        return Collections.emptyList();
+        if (hasOverheadCash(billCashes, spaceRequester))
+            return Collections.emptyList();
+
+        return StreamSupport.stream(billCashes.spliterator(), false)
+                .collect(toList());
     }
 
-    private List<BillCash> getOverheadCashTypes(Iterable<BillCash> cash, ToIntFunction<BillCash> spaceRequester) {
+    private boolean hasOverheadCash(Iterable<BillCash> cash, ToIntFunction<BillCash> spaceRequester) {
         final EnumMap<BillCash, Integer> temporary = new EnumMap<>(BillCash.class);
         cash.forEach(billCash -> temporary.merge(billCash, 1, Integer::sum));
         return temporary.entrySet().stream()
-                .filter(entry -> spaceRequester.applyAsInt(entry.getKey()) < entry.getValue())
-                .map(Map.Entry::getKey)
-                .collect(toList());
+                .anyMatch(entry -> spaceRequester.applyAsInt(entry.getKey()) < entry.getValue());
     }
 }
