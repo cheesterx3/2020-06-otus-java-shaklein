@@ -2,7 +2,6 @@ package ru.otus.solid.atm;
 
 import ru.otus.solid.types.BillCash;
 
-import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 
 /**
@@ -47,9 +46,9 @@ public interface AtmValidator {
      * Проверка на корректность запрашиваемой суммы средств
      *
      * @param amount          объём средств
-     * @param balanceSupplier функция получения текущего баланса
+     * @param balance         текущий баланс
      * @throws IllegalArgumentException              в случае запроса суммы меньше или равной нулю
      * @throws ru.otus.solid.exceptions.AtmException в случае если запрашиваемая сумма больше, чем есть в хранилище либо
      */
-    void checkSumIsAvailable(int amount, IntSupplier balanceSupplier);
+    void checkSumIsAvailable(int amount, int balance);
 }

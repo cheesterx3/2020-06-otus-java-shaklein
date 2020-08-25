@@ -55,7 +55,7 @@ public class CellAtmStorageImpl implements AtmStorage {
     @Override
     public Collection<BillCash> get(int amount, CashRetrieveStrategy strategy) {
         Objects.requireNonNull(strategy, "Strategy cannot be null");
-        atmValidator.checkSumIsAvailable(amount, this::balance);
+        atmValidator.checkSumIsAvailable(amount, balance());
         final Collection<BillCash> billsToRetrieve = strategy.retrieve(amount, this::availableCash);
         billsToRetrieve.forEach(billCash -> storage.get(billCash)
                 .stream()

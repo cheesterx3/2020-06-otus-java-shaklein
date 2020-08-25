@@ -53,9 +53,9 @@ class AtmValidatorImplTest {
 
     @Test
     void shouldThrowAnExceptionIfRequestedAmountIsIllegalOrLessThanBalance() {
-        assertThatThrownBy(() -> validator.checkSumIsAvailable(-1, () -> 10))
+        assertThatThrownBy(() -> validator.checkSumIsAvailable(-1, 10))
                 .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> validator.checkSumIsAvailable(15, () -> 10))
+        assertThatThrownBy(() -> validator.checkSumIsAvailable(15, 10))
                 .isInstanceOf(AtmException.class);
     }
 }

@@ -1,8 +1,6 @@
 package ru.otus.solid.types;
 
-import ru.otus.solid.atm.Cash;
-
-public enum BillCash implements Cash {
+public enum BillCash {
     FIVE_THOUSAND(5000),
     TWO_THOUSAND(2000),
     ONE_THOUSAND(1000),
@@ -16,9 +14,12 @@ public enum BillCash implements Cash {
         this.nominal = nominal;
     }
 
-    @Override
     public int nominal() {
         return nominal;
+    }
+
+    public int total(int cashCount) {
+        return nominal() * cashCount;
     }
 
     @Override

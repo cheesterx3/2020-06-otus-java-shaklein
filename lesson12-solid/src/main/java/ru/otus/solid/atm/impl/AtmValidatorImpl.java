@@ -6,7 +6,6 @@ import ru.otus.solid.types.BillCash;
 
 import java.util.Collection;
 import java.util.Set;
-import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -60,10 +59,10 @@ public class AtmValidatorImpl implements AtmValidator {
     }
 
     @Override
-    public void checkSumIsAvailable(int amount, IntSupplier balanceSupplier) {
+    public void checkSumIsAvailable(int amount, int balance) {
         if (amount <= 0)
             throw new IllegalArgumentException("Nominal should be more than 0");
-        if (balanceSupplier.getAsInt() < amount)
+        if (balance < amount)
             throw new AtmException(String.format("Atm doesn't have enough money to retrieve %d", amount));
     }
 
