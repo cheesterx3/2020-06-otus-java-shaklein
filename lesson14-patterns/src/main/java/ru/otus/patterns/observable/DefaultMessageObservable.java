@@ -23,8 +23,14 @@ public class DefaultMessageObservable implements MessageChangedObservable {
     @Override
     public void notify(Message oldMessage, Message newMessage) {
         final List<Listener> list = new ArrayList<>(this.listeners);
-        list.stream()
-                .map(CatchableListener::new)
-                .forEach(listener -> listener.changed(oldMessage, newMessage));
+        list.forEach(listener -> doNotify(listener, oldMessage, newMessage));
+    }
+
+    private void doNotify(Listener listener, Message oldMessage, Message newMessage) {
+        try {
+            listener.changed(oldMessage, newMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -18,7 +18,7 @@ public class DefaultProcessorFactoryImpl implements ProcessorFactory {
                 (builder, message) -> builder.field11(message.getField13()),
                 (builder, message) -> builder.field13(message.getField11())
         );
-        return new FieldExchangeProcessor(processors);
+        return new MessageRebuildProcessor(processors);
     }
 
     @Override

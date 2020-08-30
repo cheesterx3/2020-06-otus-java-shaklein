@@ -1,6 +1,5 @@
 package ru.otus.patterns.observable;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.patterns.ComplexProcessor;
 import ru.otus.patterns.model.Message;

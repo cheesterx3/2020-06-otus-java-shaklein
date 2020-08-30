@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FieldExchangeProcessorTest {
+class MessageRebuildProcessorTest {
 
     @Test
     void shouldExchangeFieldsCorrectly() {
@@ -19,7 +19,7 @@ class FieldExchangeProcessorTest {
                 (builder, message) -> builder.field1(message.getField2()),
                 (builder, message) -> builder.field2(message.getField1())
         );
-        var processor = new FieldExchangeProcessor(processors);
+        var processor = new MessageRebuildProcessor(processors);
         var newMsg = processor.process(msg);
         assertThat(newMsg.getField1())
                 .isEqualTo(msg.getField2())
@@ -46,7 +46,7 @@ class FieldExchangeProcessorTest {
                 (builder, message) -> builder.field6(message.getField2()),
                 (builder, message) -> builder.field7(message.getField1())
         );
-        processor = new FieldExchangeProcessor(processors);
+        processor = new MessageRebuildProcessor(processors);
         newMsg = processor.process(msg);
 
         assertThat(newMsg.getField1())
