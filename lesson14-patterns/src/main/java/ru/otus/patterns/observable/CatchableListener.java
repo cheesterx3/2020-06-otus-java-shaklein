@@ -2,11 +2,13 @@ package ru.otus.patterns.observable;
 
 import ru.otus.patterns.model.Message;
 
+import java.util.Objects;
+
 class CatchableListener implements Listener {
     private final Listener listener;
 
     CatchableListener(Listener listener) {
-        this.listener = listener;
+        this.listener = Objects.requireNonNull(listener,"Source listener cannot be null");
     }
 
     @Override

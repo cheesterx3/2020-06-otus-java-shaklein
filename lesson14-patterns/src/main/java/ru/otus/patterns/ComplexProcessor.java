@@ -23,10 +23,10 @@ public class ComplexProcessor implements Processor, Observable {
                             Collection<Processor> processors,
                             ProcessorFactory processorFactory,
                             BiConsumer<Message, Throwable> errorHandler) {
-        this.processors = new ArrayList<>(processors);
-        this.observable = observable;
-        this.processorFactory = processorFactory;
-        this.errorHandler = errorHandler;
+        this.processors = new ArrayList<>(Objects.requireNonNull(processors, "Processor collection cannot be null"));
+        this.observable = Objects.requireNonNull(observable, "Observable cannot be null");
+        this.processorFactory = Objects.requireNonNull(processorFactory, "Processor factory cannot be null");
+        this.errorHandler = Objects.requireNonNull(errorHandler, "Error handler cannot be null");
     }
 
     @Override
