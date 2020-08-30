@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -63,19 +63,16 @@ class ComplexProcessorTest {
     }
 
     @Test
-    @DisplayName("Тестируем последовательность вызова процессоров")
-    void handleProcessorsTest() {
+    void shouldInvokeProcessorsInCorrectOrder() {
         var message = new Message.Builder().field7("field7").build();
-
         var processor1 = mock(Processor.class);
         when(processor1.process(eq(message))).thenReturn(message);
-
         var processor2 = mock(Processor.class);
         when(processor2.process(eq(message))).thenReturn(message);
-
         var processors = List.of(processor1, processor2);
-        var factory = new DefaultProcessorFactoryImpl();
-
+        var factory = mock(ProcessorFactory.class);
+        when(factory.createCatchable(any(), any()))
+                .then(invocation -> invocation.getArgument(0, Processor.class));
         var complexProcessor = new ComplexProcessor(mock(MessageChangedObservable.class),
                 processors,
                 factory,
@@ -88,48 +85,44 @@ class ComplexProcessorTest {
     }
 
     @Test
-    @DisplayName("Тестируем обработку исключения")
-    void handleExceptionTest() {
+    void shouldThrowExceptionIfItNeed() {
         var message = new Message.Builder().field8("field8").build();
         var processor1 = mock(Processor.class);
         when(processor1.process(eq(message))).thenThrow(new RuntimeException("Test Exception"));
         var processor2 = mock(Processor.class);
         when(processor2.process(eq(message))).thenReturn(message);
         var processors = List.of(processor1, processor2);
-        var factory = new DefaultProcessorFactoryImpl();
+        var factory = mock(ProcessorFactory.class);
+        when(factory.createCatchable(any(), any()))
+                .then(invocation -> invocation.getArgument(0, Processor.class));
         var complexProcessor = new ComplexProcessor(mock(MessageChangedObservable.class),
                 processors,
                 factory,
-                (msg, ex) -> {throw new TestException(ex.getMessage());});
-        assertThatExceptionOfType(TestException.class).isThrownBy(() -> complexProcessor.process(message));
+                (msg, ex) -> {throw new RuntimeException(ex.getMessage());});
+        assertThatThrownBy(() -> complexProcessor.process(message)).isInstanceOf(RuntimeException.class);
         verify(processor1, times(1)).process(eq(message));
         verify(processor2, never()).process(eq(message));
     }
 
     @Test
-    @DisplayName("Тестируем уведомления")
-    void notifyTest() {
+    void shouldNotifyListeners() {
         var message = new Message.Builder().field9("field9").build();
         var listener = mock(Listener.class);
         var factory = mock(ProcessorFactory.class);
         when(factory.createCatchable(any(), any())).thenReturn(msg -> msg);
-        var observable = new DefaultMessageObservable();
+        var observable = spy(new DefaultMessageObservable());
         var complexProcessor = new ComplexProcessor(observable,
                 Collections.emptyList(),
                 factory,
                 (msg, ex) -> { });
         complexProcessor.addListener(listener);
-
         complexProcessor.process(message);
         complexProcessor.removeListener(listener);
         complexProcessor.process(message);
-
         verify(listener, times(1)).changed(eq(message), eq(message));
+        verify(observable,times(1)).addListener(eq(listener));
+        verify(observable,times(1)).removeListener(eq(listener));
+        verify(observable,times(2)).notify(eq(message),eq(message));
     }
 
-    private static class TestException extends RuntimeException {
-        public TestException(String message) {
-            super(message);
-        }
-    }
 }
