@@ -47,6 +47,28 @@ public class Launcher {
         }
 
         @Override
+        public String toString() {
+            return "TestClass{" +
+                    "a=" + a +
+                    ", b=" + b +
+                    ", c=" + c +
+                    ", d=" + d +
+                    ", e=" + e +
+                    ", f=" + f +
+                    ", g=" + g +
+                    ", h=" + h +
+                    ", chars=" + Arrays.toString(chars) +
+                    ", values=" + Arrays.toString(values) +
+                    ", multidim=" + Arrays.toString(multidim) +
+                    ", doubles=" + Arrays.toString(doubles) +
+                    ", nullarray=" + Arrays.toString(nullarray) +
+                    ", integers=" + integers +
+                    ", doublesMulti=" + doublesMulti +
+                    ", listOfArray=" + listOfArray +
+                    '}';
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -61,6 +83,7 @@ public class Launcher {
             if (f != testClass.f) return false;
             if (g != testClass.g) return false;
             if (h != testClass.h) return false;
+            if (!Arrays.equals(chars, testClass.chars)) return false;
             if (!Arrays.equals(values, testClass.values)) return false;
             if (!Arrays.deepEquals(multidim, testClass.multidim)) return false;
             if (!Arrays.equals(doubles, testClass.doubles)) return false;
@@ -87,6 +110,7 @@ public class Launcher {
             result = 31 * result + (int) (f ^ (f >>> 32));
             result = 31 * result + (g ? 1 : 0);
             result = 31 * result + (int) h;
+            result = 31 * result + Arrays.hashCode(chars);
             result = 31 * result + Arrays.hashCode(values);
             result = 31 * result + Arrays.deepHashCode(multidim);
             result = 31 * result + Arrays.hashCode(doubles);
@@ -95,27 +119,6 @@ public class Launcher {
             result = 31 * result + (doublesMulti != null ? doublesMulti.hashCode() : 0);
             result = 31 * result + (listOfArray != null ? listOfArray.hashCode() : 0);
             return result;
-        }
-
-        @Override
-        public String toString() {
-            return "TestClass{" +
-                    "a=" + a +
-                    ", b=" + b +
-                    ", c=" + c +
-                    ", d=" + d +
-                    ", e=" + e +
-                    ", f=" + f +
-                    ", g=" + g +
-                    ", h=" + h +
-                    ", values=" + Arrays.toString(values) +
-                    ", multidim=" + Arrays.toString(multidim) +
-                    ", doubles=" + Arrays.toString(doubles) +
-                    ", nullarray=" + Arrays.toString(nullarray) +
-                    ", integers=" + integers +
-                    ", doublesMulti=" + doublesMulti +
-                    ", listOfArray=" + listOfArray +
-                    '}';
         }
     }
 
