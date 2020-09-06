@@ -16,6 +16,7 @@ public class ObjectToTestBuilder {
     private double[] doubles;
     private List<Integer> integers;
     private List<List<Double>> doublesMulti;
+    private char[] chars;
 
     public ObjectToTestBuilder setA(int a) {
         this.a = a;
@@ -83,6 +84,11 @@ public class ObjectToTestBuilder {
     }
 
     public ObjectToTest createObjectToTest() {
-        return new ObjectToTest(a, b, c, d, e, f, g, h, values, multidim, doubles, integers, doublesMulti);
+        return new ObjectToTest(a, b, c, d, e, f, g, h, values, multidim, doubles, chars, integers, doublesMulti);
+    }
+
+    public ObjectToTestBuilder setChars(char[] chars) {
+        this.chars = chars;
+        return this;
     }
 }

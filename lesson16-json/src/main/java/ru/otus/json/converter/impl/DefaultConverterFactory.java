@@ -17,7 +17,7 @@ public class DefaultConverterFactory implements ConverterFactory {
     private Converter createType(ObjectType type) {
         return switch (type) {
             case PRIMITIVE -> new PrimitiveValueConverter();
-            case ARRAY -> new ArrayOfPrimitivesValueConverter();
+            case ARRAY -> new ArrayOfPrimitivesValueConverter(this);
             case COLLECTION -> new CollectionValueConverter(this);
         };
     }

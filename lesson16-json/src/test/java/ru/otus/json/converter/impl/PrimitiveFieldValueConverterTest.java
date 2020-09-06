@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PrimitiveFieldValueConverterTest {
 
     private static Stream<Arguments> providePrimitiveElements() {
-        return Stream.of(1L, 2, (short) 5, 3.2f, 3.4d, 'f', true, false,null).map(Arguments::of);
+        return Stream.of(1L, 2, (short) 5, 3.2f, 3.4d, 'f', true, false, null).map(Arguments::of);
     }
 
     @ParameterizedTest

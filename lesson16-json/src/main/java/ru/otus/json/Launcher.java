@@ -31,6 +31,7 @@ public class Launcher {
         boolean g = true;
         char h = '3';
 
+        char[] chars=new char[]{'a','b','c','5','!'};
         int[] values = new int[]{1, 2, 3, 4, 5};
         int[][][] multidim = {{{0}, {1}}};
         double[] doubles = new double[]{1.1, 2.3, 4.3};

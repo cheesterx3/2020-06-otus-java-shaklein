@@ -17,6 +17,7 @@ public class ObjectToTest {
     private final int[] values;
     private final int[][][] multidim;
     private final double[] doubles;
+    private final char[] chars;
 
     private final List<Integer> integers;
     private final List<List<Double>> doublesMulti;
@@ -32,7 +33,7 @@ public class ObjectToTest {
                         int[] values,
                         int[][][] multidim,
                         double[] doubles,
-                        List<Integer> integers,
+                        char[] chars, List<Integer> integers,
                         List<List<Double>> doublesMulti) {
         this.a = a;
         this.b = b;
@@ -45,6 +46,7 @@ public class ObjectToTest {
         this.values = values;
         this.multidim = multidim;
         this.doubles = doubles;
+        this.chars = chars;
         this.integers = integers;
         this.doublesMulti = doublesMulti;
     }
@@ -67,8 +69,9 @@ public class ObjectToTest {
         if (!Arrays.equals(values, that.values)) return false;
         if (!Arrays.deepEquals(multidim, that.multidim)) return false;
         if (!Arrays.equals(doubles, that.doubles)) return false;
-        if (!Objects.equals(integers, that.integers)) return false;
-        return Objects.equals(doublesMulti, that.doublesMulti);
+        if (!Arrays.equals(chars, that.chars)) return false;
+        if (integers != null ? !integers.equals(that.integers) : that.integers != null) return false;
+        return doublesMulti != null ? doublesMulti.equals(that.doublesMulti) : that.doublesMulti == null;
     }
 
     @Override
@@ -87,6 +90,7 @@ public class ObjectToTest {
         result = 31 * result + Arrays.hashCode(values);
         result = 31 * result + Arrays.deepHashCode(multidim);
         result = 31 * result + Arrays.hashCode(doubles);
+        result = 31 * result + Arrays.hashCode(chars);
         result = 31 * result + (integers != null ? integers.hashCode() : 0);
         result = 31 * result + (doublesMulti != null ? doublesMulti.hashCode() : 0);
         return result;

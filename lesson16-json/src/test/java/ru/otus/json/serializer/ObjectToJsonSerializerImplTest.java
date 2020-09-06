@@ -28,7 +28,8 @@ class ObjectToJsonSerializerImplTest {
                         .createObjectToTest(),
                 new ObjectToTestBuilder().setA(1).setB(1.5d).setC(4.5f).createObjectToTest(),
                 new ObjectToTestBuilder().setDoublesMulti(List.of(List.of(1.4, 2.4), List.of(2.7))).createObjectToTest(),
-                new ObjectToTestBuilder().setDoubles(null).setDoublesMulti(null).createObjectToTest()
+                new ObjectToTestBuilder().setDoubles(null).setDoublesMulti(null).createObjectToTest(),
+                new ObjectToTestBuilder().setChars(new char[]{'a','b','c','5','!'}).createObjectToTest()
         ).map(Arguments::of);
     }
 
