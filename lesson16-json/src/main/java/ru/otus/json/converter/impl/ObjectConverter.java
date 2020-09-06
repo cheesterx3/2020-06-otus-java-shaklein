@@ -11,7 +11,10 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
 
-public class ObjectConverter implements Converter {
+/**
+ * Конвертер объектов
+ */
+class ObjectConverter implements Converter {
     private final ConverterFactory converterFactory;
 
     public ObjectConverter(ConverterFactory converterFactory) {

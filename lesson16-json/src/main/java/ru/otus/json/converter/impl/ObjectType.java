@@ -8,8 +8,17 @@ import java.util.function.Predicate;
 
 
 enum ObjectType {
+    /**
+     * Примитивный типы данных или обёртка
+     */
     PRIMITIVE(ReflectionUtils::isPrimitiveOrPrimitiveWrapper),
+    /**
+     * Массив примитивных типов данных
+     */
     ARRAY(ReflectionUtils::isArrayOfPrimitive),
+    /**
+     * Коллекции
+     */
     COLLECTION(Collection.class::isAssignableFrom);
 
     private final Predicate<Class<?>> classPredicate;

@@ -4,7 +4,13 @@ import ru.otus.json.converter.Converter;
 
 import static java.util.Objects.nonNull;
 
-public class PrimitiveValueConverter implements Converter {
+/**
+ * Конвертер значений всех примитивных типов.
+ *
+ * @implNote По сути для всех примитивных значений достаточно использовать toString для решения задачи.
+ * Поэтому нет смысла создавать по каждому конвертеру на тип на данный момент.
+ */
+class PrimitiveValueConverter implements Converter {
 
     @Override
     public String convert(Object fieldValue) {

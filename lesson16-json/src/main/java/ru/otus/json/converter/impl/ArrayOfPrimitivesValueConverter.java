@@ -10,7 +10,10 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
-public class ArrayOfPrimitivesValueConverter implements Converter {
+/**
+ * Конвертер значений для массивов примитивов любой размерности
+ */
+class ArrayOfPrimitivesValueConverter implements Converter {
     private final ConverterFactory converterFactory;
 
     public ArrayOfPrimitivesValueConverter(ConverterFactory converterFactory) {

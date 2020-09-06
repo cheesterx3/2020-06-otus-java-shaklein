@@ -8,7 +8,10 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
-public class CollectionValueConverter implements Converter {
+/**
+ * Конвертер значений для объектов, реализующих интерфейс {@link Collection}
+ */
+class CollectionValueConverter implements Converter {
     private final ConverterFactory converterFactory;
 
     public CollectionValueConverter(ConverterFactory converterFactory) {
