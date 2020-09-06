@@ -3,7 +3,7 @@ package ru.otus.json.helper;
 import ru.otus.json.exceptions.FieldAccessException;
 
 import java.lang.reflect.Field;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Objects.nonNull;
 
@@ -23,13 +23,22 @@ public class ReflectionUtils {
         }
     }
 
+    public static List<Field> getAllClassFields(Class<?> clazz) {
+        if (nonNull(clazz)) {
+            final List<Field> fields = new ArrayList<>(Arrays.asList(clazz.getDeclaredFields()));
+            fields.addAll(getAllClassFields(clazz.getSuperclass()));
+            return fields;
+        }
+        return Collections.emptyList();
+    }
+
     public static boolean isArrayOfPrimitive(Class<?> objectClass) {
         return nonNull(objectClass)
                 && objectClass.isArray()
                 && ((objectClass.getComponentType().isPrimitive()) || isArrayOfPrimitive(objectClass.getComponentType()));
     }
 
-     public static boolean isPrimitiveOrPrimitiveWrapper(Class<?> objectClass) {
+    public static boolean isPrimitiveOrPrimitiveWrapper(Class<?> objectClass) {
         return objectClass.isPrimitive() || PRIMITIVE_WRAPPERS.contains(objectClass);
     }
 }

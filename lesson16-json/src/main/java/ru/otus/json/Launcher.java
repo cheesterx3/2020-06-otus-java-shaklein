@@ -14,11 +14,19 @@ public class Launcher {
     public static void main(String[] args) {
         Gson gson = new Gson();
         ObjectToJsonSerializer jsonSerializer = new ObjectToJsonSerializerImpl();
-        TestClass object = new TestClass();
-        String json = jsonSerializer.toJson(new TestClass());
+        ExtExtTextClass object = new ExtExtTextClass();
+        String json = jsonSerializer.toJson(object);
         System.out.println("json representation = " + json);
-        TestClass aClass = gson.fromJson(json, TestClass.class);
-        System.out.println("Checking gson parsing = " + aClass.equals(object));
+        ExtExtTextClass aObject = gson.fromJson(json, ExtExtTextClass.class);
+        System.out.println("Checking gson parsing = " + aObject.equals(object));
+    }
+
+    private static class ExtExtTextClass extends ExtTextClass {
+        double newDouble = 1000000000.34533345;
+    }
+
+    private static class ExtTextClass extends TestClass {
+        int newField = 1000000000;
     }
 
     private static class TestClass {
@@ -31,7 +39,7 @@ public class Launcher {
         boolean g = true;
         char h = '3';
 
-        char[] chars=new char[]{'a','b','c','5','!'};
+        char[] chars = new char[]{'a', 'b', 'c', '5', '!'};
         int[] values = new int[]{1, 2, 3, 4, 5};
         int[][][] multidim = {{{0}, {1}}};
         double[] doubles = new double[]{1.1, 2.3, 4.3};
@@ -40,6 +48,7 @@ public class Launcher {
         List<Integer> integers = List.of(1, 2, 3);
         List<List<Double>> doublesMulti = List.of(List.of(1.1, 1.2, 1.3), List.of(2.1, 2.2, 2.3));
         List<int[][]> listOfArray = new ArrayList<>();
+
         {
             listOfArray.add(null);
             listOfArray.add(new int[][]{{}, {}});

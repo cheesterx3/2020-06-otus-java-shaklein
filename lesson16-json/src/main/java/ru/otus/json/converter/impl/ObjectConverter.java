@@ -5,9 +5,9 @@ import ru.otus.json.converter.ConverterFactory;
 import ru.otus.json.helper.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
 
@@ -24,8 +24,8 @@ class ObjectConverter implements Converter {
     @Override
     public String convert(Object object) {
         if (nonNull(object)) {
-            Field[] fields = object.getClass().getDeclaredFields();
-            final String collect = Stream.of(fields)
+            final List<Field> fields = ReflectionUtils.getAllClassFields(object.getClass());
+            final String collect = fields.stream()
                     .map(field -> getFieldConvertResult(object, field, converterFactory.converter(field.getType())))
                     .filter(Objects::nonNull)
                     .map(convertResult -> String.format("\"%s\":%s", convertResult.getFieldName(), convertResult.getResult()))
