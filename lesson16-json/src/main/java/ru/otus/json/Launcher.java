@@ -23,10 +23,48 @@ public class Launcher {
 
     private static class ExtExtTextClass extends ExtTextClass {
         double newDouble = 1000000000.34533345;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+
+            ExtExtTextClass that = (ExtExtTextClass) o;
+
+            return Double.compare(that.newDouble, newDouble) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = super.hashCode();
+            long temp;
+            temp = Double.doubleToLongBits(newDouble);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
     }
 
     private static class ExtTextClass extends TestClass {
         int newField = 1000000000;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+
+            ExtTextClass that = (ExtTextClass) o;
+
+            return newField == that.newField;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = super.hashCode();
+            result = 31 * result + newField;
+            return result;
+        }
     }
 
     private static class TestClass {
