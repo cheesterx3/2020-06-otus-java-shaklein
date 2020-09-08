@@ -17,7 +17,7 @@ class PrimitiveFieldValueConverterTest {
     @ParameterizedTest
     @MethodSource("providePrimitiveElements")
     void shouldCorrectlyReturnSpringRepresentationOfPrimitiveObject(Object object) {
-        PrimitiveValueConverter converter = new PrimitiveValueConverter();
+        PrimitiveConverter converter = new PrimitiveConverter();
         String convert = converter.convert(object);
         assertThat(convert).isNotEmpty();
     }

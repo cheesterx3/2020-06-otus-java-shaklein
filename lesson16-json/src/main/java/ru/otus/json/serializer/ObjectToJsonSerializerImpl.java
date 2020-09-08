@@ -3,7 +3,7 @@ package ru.otus.json.serializer;
 import ru.otus.json.converter.ConverterFactory;
 import ru.otus.json.converter.impl.DefaultConverterFactory;
 
-import java.util.Objects;
+import static java.util.Objects.nonNull;
 
 public class ObjectToJsonSerializerImpl implements ObjectToJsonSerializer {
     private final ConverterFactory converterFactory;
@@ -18,8 +18,9 @@ public class ObjectToJsonSerializerImpl implements ObjectToJsonSerializer {
 
     @Override
     public String toJson(Object object) {
-        Objects.requireNonNull(object, "Object should not be null");
-        return converterFactory.objectConverter().convert(object);
+        if (nonNull(object))
+            return converterFactory.converter(object.getClass()).convert(object);
+        return "null";
     }
 
 

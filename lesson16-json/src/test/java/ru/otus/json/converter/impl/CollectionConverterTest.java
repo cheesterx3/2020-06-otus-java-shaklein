@@ -14,7 +14,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class CollectionFieldValueConverterTest {
+class CollectionConverterTest {
 
     @Test
     void shouldCorrectlyReturnStringRepresentationOfCollectionWithAllowedTypes() {
@@ -22,7 +22,7 @@ class CollectionFieldValueConverterTest {
         Converter fieldConverter = mock(Converter.class);
         when(fieldConverter.convert(any())).thenAnswer(invocation -> invocation.getArgument(0).toString());
         when(converterFactory.converter(any())).thenReturn(fieldConverter);
-        CollectionValueConverter converter = new CollectionValueConverter(converterFactory);
+        CollectionConverter converter = new CollectionConverter(converterFactory);
         assertThat(converter.convert(List.of(1, 2, 3))).isEqualTo("[1,2,3]");
         assertThat(converter.convert(List.of(1.1, 2.1, 3.1))).isEqualTo("[1.1,2.1,3.1]");
         assertThat(converter.convert(List.of(true, false, true))).isEqualTo("[true,false,true]");
@@ -34,7 +34,7 @@ class CollectionFieldValueConverterTest {
         Converter fieldConverter = mock(Converter.class);
         when(fieldConverter.convert(any())).thenAnswer(invocation -> invocation.getArgument(0).toString());
         when(converterFactory.converter(AdditionalMatchers.not(eq(ArrayList.class)))).thenReturn(fieldConverter);
-        CollectionValueConverter converter = new CollectionValueConverter(converterFactory);
+        CollectionConverter converter = new CollectionConverter(converterFactory);
         when(converterFactory.converter(eq(ArrayList.class))).thenReturn(converter);
         List<List<?>> list=new ArrayList<>();
         list.add(new ArrayList<>(List.of(1, 2, 3)));

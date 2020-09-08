@@ -16,14 +16,14 @@ public class DefaultConverterFactory implements ConverterFactory {
 
     private Converter createType(ObjectType type) {
         return switch (type) {
-            case PRIMITIVE -> new PrimitiveValueConverter();
-            case ARRAY -> new ArrayOfPrimitivesValueConverter(this);
-            case COLLECTION -> new CollectionValueConverter(this);
+            case PRIMITIVE -> new PrimitiveConverter();
+            case ARRAY -> new ArrayConverter(this);
+            case COLLECTION -> new CollectionConverter(this);
+            case MAP -> new MapConverter(this);
+            case STRING -> new StringConverter();
+            case OBJECT -> new ObjectConverter(this);
         };
     }
 
-    @Override
-    public Converter objectConverter() {
-        return new ObjectConverter(this);
-    }
+
 }

@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import ru.otus.json.serializer.ObjectToJsonSerializer;
 import ru.otus.json.serializer.ObjectToJsonSerializerImpl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Launcher {
 
@@ -22,7 +19,11 @@ public class Launcher {
     }
 
     private static class ExtExtTextClass extends ExtTextClass {
+        static int staticInt = 10;
+        final Map<String, ExtTextClass> map = Map.of("1", new ExtTextClass(), "2", new ExtTextClass());
         double newDouble = 1000000000.34533345;
+        transient boolean transientBool = false;
+        String string = "2342342";
 
         @Override
         public boolean equals(Object o) {
@@ -32,15 +33,21 @@ public class Launcher {
 
             ExtExtTextClass that = (ExtExtTextClass) o;
 
-            return Double.compare(that.newDouble, newDouble) == 0;
+            if (Double.compare(that.newDouble, newDouble) != 0) return false;
+            if (transientBool != that.transientBool) return false;
+            if (!Objects.equals(map, that.map)) return false;
+            return Objects.equals(string, that.string);
         }
 
         @Override
         public int hashCode() {
             int result = super.hashCode();
             long temp;
+            result = 31 * result + (map != null ? map.hashCode() : 0);
             temp = Double.doubleToLongBits(newDouble);
             result = 31 * result + (int) (temp ^ (temp >>> 32));
+            result = 31 * result + (transientBool ? 1 : 0);
+            result = 31 * result + (string != null ? string.hashCode() : 0);
             return result;
         }
     }

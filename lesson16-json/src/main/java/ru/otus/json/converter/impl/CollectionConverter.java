@@ -11,10 +11,10 @@ import static java.util.Objects.nonNull;
 /**
  * Конвертер значений для объектов, реализующих интерфейс {@link Collection}
  */
-class CollectionValueConverter implements Converter {
+class CollectionConverter implements Converter {
     private final ConverterFactory converterFactory;
 
-    public CollectionValueConverter(ConverterFactory converterFactory) {
+    public CollectionConverter(ConverterFactory converterFactory) {
         this.converterFactory = converterFactory;
     }
 

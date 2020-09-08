@@ -13,10 +13,10 @@ import static java.util.Objects.nonNull;
 /**
  * Конвертер значений для массивов примитивов любой размерности
  */
-class ArrayOfPrimitivesValueConverter implements Converter {
+class ArrayConverter implements Converter {
     private final ConverterFactory converterFactory;
 
-    public ArrayOfPrimitivesValueConverter(ConverterFactory converterFactory) {
+    public ArrayConverter(ConverterFactory converterFactory) {
         this.converterFactory = converterFactory;
     }
 

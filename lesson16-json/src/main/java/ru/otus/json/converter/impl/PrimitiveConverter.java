@@ -10,7 +10,7 @@ import static java.util.Objects.nonNull;
  * @implNote По сути для всех примитивных значений достаточно использовать toString для решения задачи.
  * Поэтому нет смысла создавать по каждому конвертеру на тип на данный момент.
  */
-class PrimitiveValueConverter implements Converter {
+class PrimitiveConverter implements Converter {
 
     @Override
     public String convert(Object fieldValue) {

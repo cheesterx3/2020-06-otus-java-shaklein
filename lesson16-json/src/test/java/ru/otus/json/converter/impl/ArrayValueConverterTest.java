@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ArrayOfPrimitivesFieldValueConverterTest {
+class ArrayValueConverterTest {
 
     @Test
     void shouldCorrectlyReturnStringRepresentationOfArrayWithAnyDimension() {
@@ -21,7 +21,7 @@ class ArrayOfPrimitivesFieldValueConverterTest {
         Converter fieldConverter = mock(Converter.class);
         when(fieldConverter.convert(any())).thenAnswer(invocation -> invocation.getArgument(0).toString());
         when(converterFactory.converter(AdditionalMatchers.not(argThat(new ArrayTypeMatcher())))).thenReturn(fieldConverter);
-        ArrayOfPrimitivesValueConverter converter = new ArrayOfPrimitivesValueConverter(converterFactory);
+        ArrayConverter converter = new ArrayConverter(converterFactory);
         when(converterFactory.converter(argThat(new ArrayTypeMatcher()))).thenReturn(converter);
         assertThat(converter.convert(new int[]{})).isEqualTo("[]");
         assertThat(converter.convert(new int[][]{{}})).isEqualTo("[[]]");

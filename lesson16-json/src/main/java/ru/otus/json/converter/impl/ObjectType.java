@@ -4,6 +4,7 @@ import ru.otus.json.exceptions.ClassNotSupportedException;
 import ru.otus.json.helper.ReflectionUtils;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Predicate;
 
 
@@ -15,11 +16,14 @@ enum ObjectType {
     /**
      * Массив примитивных типов данных
      */
-    ARRAY(ReflectionUtils::isArrayOfPrimitive),
+    ARRAY(ReflectionUtils::isSupportedArray),
     /**
      * Коллекции
      */
-    COLLECTION(Collection.class::isAssignableFrom);
+    COLLECTION(Collection.class::isAssignableFrom),
+    MAP(Map.class::isAssignableFrom),
+    STRING(String.class::equals),
+    OBJECT(aClass -> true);
 
     private final Predicate<Class<?>> classPredicate;
 

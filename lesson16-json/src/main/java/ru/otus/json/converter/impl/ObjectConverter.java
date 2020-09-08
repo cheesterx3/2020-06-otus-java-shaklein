@@ -24,7 +24,7 @@ class ObjectConverter implements Converter {
     @Override
     public String convert(Object object) {
         if (nonNull(object)) {
-            final List<Field> fields = ReflectionUtils.getAllClassFields(object.getClass());
+            final List<Field> fields = ReflectionUtils.getAllSerializableFields(object.getClass());
             final String collect = fields.stream()
                     .map(field -> getFieldConvertResult(object, field, converterFactory.converter(field.getType())))
                     .filter(Objects::nonNull)

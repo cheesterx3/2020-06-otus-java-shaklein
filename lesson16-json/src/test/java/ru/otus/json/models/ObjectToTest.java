@@ -70,8 +70,8 @@ public class ObjectToTest {
         if (!Arrays.deepEquals(multidim, that.multidim)) return false;
         if (!Arrays.equals(doubles, that.doubles)) return false;
         if (!Arrays.equals(chars, that.chars)) return false;
-        if (integers != null ? !integers.equals(that.integers) : that.integers != null) return false;
-        return doublesMulti != null ? doublesMulti.equals(that.doublesMulti) : that.doublesMulti == null;
+        if (!Objects.equals(integers, that.integers)) return false;
+        return Objects.equals(doublesMulti, that.doublesMulti);
     }
 
     @Override
@@ -94,5 +94,25 @@ public class ObjectToTest {
         result = 31 * result + (integers != null ? integers.hashCode() : 0);
         result = 31 * result + (doublesMulti != null ? doublesMulti.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectToTest{" +
+                "a=" + a +
+                ", b=" + b +
+                ", c=" + c +
+                ", d=" + d +
+                ", e=" + e +
+                ", f=" + f +
+                ", g=" + g +
+                ", h=" + h +
+                ", values=" + Arrays.toString(values) +
+                ", multidim=" + Arrays.toString(multidim) +
+                ", doubles=" + Arrays.toString(doubles) +
+                ", chars=" + Arrays.toString(chars) +
+                ", integers=" + integers +
+                ", doublesMulti=" + doublesMulti +
+                '}';
     }
 }
