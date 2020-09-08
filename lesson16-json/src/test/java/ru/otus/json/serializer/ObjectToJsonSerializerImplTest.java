@@ -10,9 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import ru.otus.json.models.ObjectToTest;
 import ru.otus.json.models.ObjectToTestBuilder;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,18 +61,30 @@ class ObjectToJsonSerializerImplTest {
     @ParameterizedTest
     @MethodSource("processObjectsToTest")
     void shouldCorrectlyConvertObjectToJsonAndParseByGSON(Object object) {
-        String json = serializer.toJson(object);
-        Object expected = gson.fromJson(json, object.getClass());
+        var json = serializer.toJson(object);
+        var expected = gson.fromJson(json, object.getClass());
         assertThat(object).isEqualTo(expected);
     }
 
     @Test
     void shouldCorrectlyConvertCollectionToJsonAndParseByGSON() {
-        final List<ObjectToTest> object = new ArrayList<>(List.of(new ObjectToTestBuilder().setA(1).createObjectToTest(),
+        final var object = new ArrayList<>(List.of(new ObjectToTestBuilder().setA(1).createObjectToTest(),
                 new ObjectToTestBuilder().setC(1.4f).createObjectToTest()));
-        String json = serializer.toJson(object);
-        Object expected = gson.fromJson(json, TypeToken.getParameterized(List.class, ObjectToTest.class).getType());
+        var json = serializer.toJson(object);
+        var expected = gson.fromJson(json, TypeToken.getParameterized(List.class, ObjectToTest.class).getType());
         assertThat(object).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldCorrectlyConvertMapToJsonAndParseByGSON() {
+        var object = new HashMap<>(Map.of(1, "test", 2, "test 2"));
+        var json = serializer.toJson(object);
+        var expected = gson.fromJson(json, TypeToken.getParameterized(Map.class, Integer.class, String.class).getType());
+        assertThat(object).isEqualTo(expected);
+        var newMap = new HashMap<>(Map.of(1, Map.of(1,new ObjectToTestBuilder().createObjectToTest()), 2, Map.of(1,new ObjectToTestBuilder().createObjectToTest())));
+        json = serializer.toJson(newMap);
+        expected = gson.fromJson(json, TypeToken.getParameterized(Map.class, Integer.class, TypeToken.getParameterized(Map.class, Integer.class, ObjectToTest.class).getType()).getType());
+        assertThat(newMap).isEqualTo(expected);
     }
 
     @ParameterizedTest
