@@ -21,8 +21,17 @@ enum ObjectType {
      * Коллекции
      */
     COLLECTION(Collection.class::isAssignableFrom),
+    /**
+     * Отображения
+     */
     MAP(Map.class::isAssignableFrom),
+    /**
+     * Строки
+     */
     STRING(String.class::equals),
+    /**
+     * Прочие объекты
+     */
     OBJECT(aClass -> true);
 
     private final Predicate<Class<?>> classPredicate;

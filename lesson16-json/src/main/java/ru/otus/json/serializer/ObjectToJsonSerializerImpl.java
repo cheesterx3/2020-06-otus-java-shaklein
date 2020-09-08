@@ -23,5 +23,4 @@ public class ObjectToJsonSerializerImpl implements ObjectToJsonSerializer {
         return "null";
     }
 
-
 }

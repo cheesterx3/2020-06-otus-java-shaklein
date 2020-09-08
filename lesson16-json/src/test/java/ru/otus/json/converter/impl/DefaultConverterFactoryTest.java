@@ -18,7 +18,7 @@ class DefaultConverterFactoryTest {
         return Stream.of(Integer.class, Long.class, Short.class, Boolean.class, Byte.class,
                 Character.class, Double.class, Float.class, int.class, long.class, short.class,
                 boolean.class, float.class, char.class, double.class, byte.class, int[].class,
-                double[][].class, char[][][].class, List.class, Set.class,String.class,Object.class).map(Arguments::of);
+                double[][].class, char[][][].class, List.class, Set.class, String.class, Object.class).map(Arguments::of);
     }
 
     @BeforeEach

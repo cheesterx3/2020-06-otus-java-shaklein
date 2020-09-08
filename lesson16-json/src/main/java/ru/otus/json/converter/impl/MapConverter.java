@@ -24,7 +24,7 @@ public class MapConverter implements Converter {
 
     private String mapToString(Map<?, ?> map) {
         return map.entrySet().stream()
-                .map(entry -> objectToString(entry.getKey()) + ":" + objectToString(entry.getValue()))
+                .map(entry -> String.format("%s:%s", objectToString(entry.getKey()), objectToString(entry.getValue())))
                 .collect(Collectors.joining(","));
     }
 

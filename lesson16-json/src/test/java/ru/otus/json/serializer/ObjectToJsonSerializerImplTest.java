@@ -33,8 +33,25 @@ class ObjectToJsonSerializerImplTest {
                 new ObjectToTestBuilder().setA(1).setB(1.5d).setC(4.5f).createObjectToTest(),
                 new ObjectToTestBuilder().setDoublesMulti(List.of(List.of(1.4, 2.4), List.of(2.7))).createObjectToTest(),
                 new ObjectToTestBuilder().setDoubles(null).setDoublesMulti(null).createObjectToTest(),
-                new ObjectToTestBuilder().setChars(new char[]{'a','b','c','5','!'}).createObjectToTest()
+                new ObjectToTestBuilder().setChars(new char[]{'a', 'b', 'c', '5', '!'}).createObjectToTest()
         ).map(Arguments::of);
+    }
+
+    private static Stream<Arguments> generateDataForCustomTest() {
+        return Stream.of(
+                null,
+                Arguments.of(true), Arguments.of(false),
+                Arguments.of((byte) 1), Arguments.of((short) 2f),
+                Arguments.of(3), Arguments.of(4L), Arguments.of(5f), Arguments.of(6d),
+                Arguments.of("aaa"), Arguments.of('b'),
+                Arguments.of(new byte[]{1, 2, 3}),
+                Arguments.of(new short[]{4, 5, 6}),
+                Arguments.of(new int[]{7, 8, 9}),
+                Arguments.of(new float[]{10f, 11f, 12f}),
+                Arguments.of(new double[]{13d, 14d, 15d}),
+                Arguments.of(List.of(16, 17, 18)),
+                Arguments.of(Collections.singletonList(19))
+        );
     }
 
     @BeforeEach
@@ -47,41 +64,22 @@ class ObjectToJsonSerializerImplTest {
     @MethodSource("processObjectsToTest")
     void shouldCorrectlyConvertObjectToJsonAndParseByGSON(Object object) {
         String json = serializer.toJson(object);
-        System.out.println("json = " + json);
         Object expected = gson.fromJson(json, object.getClass());
         assertThat(object).isEqualTo(expected);
     }
 
     @Test
     void shouldCorrectlyConvertCollectionToJsonAndParseByGSON() {
-        final List<ObjectToTest> object=new ArrayList<>(List.of(new ObjectToTestBuilder().setA(1).createObjectToTest(),
+        final List<ObjectToTest> object = new ArrayList<>(List.of(new ObjectToTestBuilder().setA(1).createObjectToTest(),
                 new ObjectToTestBuilder().setC(1.4f).createObjectToTest()));
         String json = serializer.toJson(object);
-        System.out.println("json = " + json);
-        Object expected = gson.fromJson(json, TypeToken.getParameterized(List.class,ObjectToTest.class).getType());
+        Object expected = gson.fromJson(json, TypeToken.getParameterized(List.class, ObjectToTest.class).getType());
         assertThat(object).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @MethodSource("generateDataForCustomTest")
-    void customTest(Object o){
+    void customTest(Object o) {
         assertThat(serializer.toJson(o)).isEqualTo(gson.toJson(o));
-    }
-
-    private static Stream<Arguments> generateDataForCustomTest() {
-        return Stream.of(
-                null,
-                Arguments.of(true), Arguments.of(false),
-                Arguments.of((byte)1), Arguments.of((short)2f),
-                Arguments.of(3), Arguments.of(4L), Arguments.of(5f), Arguments.of(6d),
-                Arguments.of("aaa"), Arguments.of('b'),
-                Arguments.of(new byte[] {1, 2, 3}),
-                Arguments.of(new short[] {4, 5, 6}),
-                Arguments.of(new int[] {7, 8, 9}),
-                Arguments.of(new float[] {10f, 11f, 12f}),
-                Arguments.of(new double[] {13d, 14d, 15d}),
-                Arguments.of(List.of(16, 17, 18)),
-                Arguments.of(Collections.singletonList(19))
-        );
     }
 }
