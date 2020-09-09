@@ -1,6 +1,5 @@
 package ru.otus.json.converter.impl;
 
-import ru.otus.json.exceptions.ClassNotSupportedException;
 import ru.otus.json.helper.ReflectionUtils;
 
 import java.util.Collection;
@@ -16,7 +15,7 @@ enum ObjectType {
     /**
      * Массив примитивных типов данных
      */
-    ARRAY(ReflectionUtils::isSupportedArray),
+    ARRAY(Class::isArray),
     /**
      * Коллекции
      */
@@ -32,7 +31,7 @@ enum ObjectType {
     /**
      * Прочие объекты
      */
-    OBJECT(aClass -> true);
+    OBJECT(aClass -> false);
 
     private final Predicate<Class<?>> classPredicate;
 
@@ -44,7 +43,7 @@ enum ObjectType {
         for (ObjectType type : values()) {
             if (type.classPredicate.test(aClass)) return type;
         }
-        throw new ClassNotSupportedException(String.format("Class %s not supported", aClass));
+        return OBJECT;
     }
 
 }

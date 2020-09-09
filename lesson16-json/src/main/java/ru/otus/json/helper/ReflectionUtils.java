@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 
 public class ReflectionUtils {
-    private static final Set<Class<?>> PRIMITIVE_WRAPPERS = Set.of(Character.class, Boolean.class, Number.class);
+    private static final Set<Class<?>> PRIMITIVE_WRAPPERS = Set.of(Integer.class, Long.class,
+            Byte.class, Short.class, Character.class, Float.class, Double.class, Boolean.class);
 
     private ReflectionUtils() {
     }
@@ -38,16 +39,11 @@ public class ReflectionUtils {
         return Collections.emptyList();
     }
 
-    public static boolean isSupportedArray(Class<?> objectClass) {
-        return nonNull(objectClass) && objectClass.isArray();
-    }
-
     private static boolean isSerializable(Field field) {
         return !Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers());
     }
 
     public static boolean isPrimitiveOrPrimitiveWrapper(Class<?> objectClass) {
-        return objectClass.isPrimitive() ||
-                PRIMITIVE_WRAPPERS.stream().anyMatch(wrapper -> wrapper.isAssignableFrom(objectClass));
+        return objectClass.isPrimitive() ||                PRIMITIVE_WRAPPERS.contains(objectClass);
     }
 }
