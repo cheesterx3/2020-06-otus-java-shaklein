@@ -43,7 +43,6 @@ public class DbServiceGenericImpl<T, K> implements DBServiceGeneric<T, K> {
                 return objectOptional;
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
-                sessionManager.rollbackSession();
             }
             return Optional.empty();
         }
@@ -57,7 +56,6 @@ public class DbServiceGenericImpl<T, K> implements DBServiceGeneric<T, K> {
                 return dao.selectAll();
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
-                sessionManager.rollbackSession();
             }
             return Collections.emptyList();
         }
