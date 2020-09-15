@@ -19,7 +19,6 @@ public class DbExecutorImpl implements DbExecutor {
 
     @Override
     public long executeInsert(Connection connection, String sql, List<Object> params) throws SQLException {
-        Savepoint savePoint = connection.setSavepoint("savePointName");
         logger.info("executing insert sql: {}", sql);
         try (var pst = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             for (int idx = 0; idx < params.size(); idx++) {
@@ -30,15 +29,11 @@ public class DbExecutorImpl implements DbExecutor {
                 rs.next();
                 return rs.getLong(1);
             }
-        } catch (SQLException ex) {
-            connection.rollback(savePoint);
-            throw ex;
         }
     }
 
     @Override
     public void executeUpdate(Connection connection, String sql, Object id, List<Object> params) throws SQLException {
-        Savepoint savePoint = connection.setSavepoint("savePointName");
         logger.info("executing update sql: {}", sql);
         try (var pst = connection.prepareStatement(sql)) {
             for (int idx = 0; idx < params.size(); idx++) {
@@ -49,9 +44,6 @@ public class DbExecutorImpl implements DbExecutor {
             try (ResultSet rs = pst.getGeneratedKeys()) {
                 rs.next();
             }
-        } catch (SQLException ex) {
-            connection.rollback(savePoint);
-            throw ex;
         }
     }
 
