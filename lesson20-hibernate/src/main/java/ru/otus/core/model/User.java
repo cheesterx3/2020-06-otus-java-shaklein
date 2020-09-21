@@ -1,14 +1,17 @@
 package ru.otus.core.model;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 @NoArgsConstructor
 public class User {
@@ -33,4 +36,13 @@ public class User {
         phone.setUser(this);
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address=" + address +
+                ", phones=" + phones +
+                '}';
+    }
 }
