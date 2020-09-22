@@ -53,9 +53,7 @@ public class DbServiceGenericImpl<T, K> implements DBServiceGeneric<T, K> {
         try (var sessionManager = dao.getSessionManager()) {
             sessionManager.beginSession();
             try {
-                final var list = dao.selectAll();
-                logger.info("objects: {}", list);
-                return list;
+                return dao.selectAll();
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
