@@ -24,6 +24,7 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private AddressDataSet address;
+    // А EAGER мы используем потому что в DBService мы закрываем сессию после каждой операции
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<PhoneDataSet> phones = new ArrayList<>();
 
