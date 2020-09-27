@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -18,7 +19,7 @@ public class MyCache<K, V> implements HwCache<K, V> {
     public static final String REMOVE_ACTION = "REMOVE";
     public static final String ADD_ACTION = "ADD";
     private final Logger logger = LoggerFactory.getLogger(MyCache.class);
-    private final WeakHashMap<K, V> hashMap = new WeakHashMap<>();
+    private final Map<K, V> hashMap = new WeakHashMap<>();
     private final Set<HwListener<K, V>> listeners = new HashSet<>();
 
     @Override
