@@ -10,7 +10,6 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import ru.otus.core.service.DBServiceUser;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.services.TemplateProcessor;
-import ru.otus.servlet.UserSaveServlet;
 import ru.otus.servlet.UsersServlet;
 
 public class UsersWebServerSimple implements UsersWebServer {
@@ -47,7 +46,7 @@ public class UsersWebServerSimple implements UsersWebServer {
     private Server initContext() {
         val resourceHandler = createResourceHandler();
         val servletContextHandler = createServletContextHandler();
-        val handlers = new HandlerList(resourceHandler, applySecurity(servletContextHandler, "/users", "/save"));
+        val handlers = new HandlerList(resourceHandler, applySecurity(servletContextHandler, "/users"));
         server.setHandler(handlers);
         return server;
     }
@@ -67,7 +66,6 @@ public class UsersWebServerSimple implements UsersWebServer {
     private ServletContextHandler createServletContextHandler() {
         val servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContextHandler.addServlet(new ServletHolder(new UsersServlet(templateProcessor, dbServiceUser)), "/users");
-        servletContextHandler.addServlet(new ServletHolder(new UserSaveServlet(dbServiceUser)), "/save");
         return servletContextHandler;
     }
 }
