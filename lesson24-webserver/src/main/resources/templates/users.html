@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Пользователи</title>
+</head>
+<body>
+<form action="/users" method="post">
+    <label>
+        Имя <br/>
+        <input type="text" name="name" value="">
+    </label>
+    <br/>
+    <label>
+        Адрес <br/>
+        <input type="text" name="address" value="">
+    </label>
+    <br/>
+    <label>
+        Телефоны (список через ,) <br/>
+        <input type="text" name="phones" value="">
+    </label>
+    <br/><br/>
+    <input type="submit" value="Сохранить">
+</form>
+<table>
+    <thead>
+    <tr>
+        <td style="width: 50px">Id</td>
+        <td style="width: 150px">Имя</td>
+        <td style="width: 300px">Адрес</td>
+        <td>Телефоны</td>
+    </tr>
+    </thead>
+    <tbody>
+        <#list users as user>
+            <tr>
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.addressInfo}</td>
+                <td>
+                    <#list user.phones as phone>
+                        ${phone.number}${phone?has_next?string(',','')}
+                    </#list>
+                </td>
+            </tr>
+        </#list>
+    </tbody>
+</table>
+</body>
+</html>
