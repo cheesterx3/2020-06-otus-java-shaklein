@@ -2,6 +2,8 @@ package ru.otus.config;
 
 import lombok.val;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -41,9 +43,13 @@ public class CoreConfig {
     @DependsOn("migrationService")
     public SessionFactory sessionFactory(DbConfig dbConfig) {
         val configuration = new org.hibernate.cfg.Configuration().addProperties(dbConfig.toProperties());
+        val serviceRegistry = new StandardServiceRegistryBuilder()
+                .applySettings(configuration.getProperties()).build();
+        val metadataSources = new MetadataSources(serviceRegistry);
         new Reflections("ru.otus")
                 .getTypesAnnotatedWith(Entity.class)
-                .forEach(configuration::addAnnotatedClass);
-        return configuration.buildSessionFactory();
+                .forEach(metadataSources::addAnnotatedClass);
+        val metadata = metadataSources.getMetadataBuilder().build();
+        return metadata.getSessionFactoryBuilder().build();
     }
 }
