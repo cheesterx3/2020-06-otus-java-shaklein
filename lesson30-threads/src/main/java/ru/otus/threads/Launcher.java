@@ -1,6 +1,7 @@
 package ru.otus.threads;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,14 +28,18 @@ public class Launcher {
         private int value = 0;
 
         public void start() {
-            new Thread(this::changeValueAndPrint).start();
-            new Thread(this::printValue).start();
+            val thread = new Thread(this::changeValueAndPrint);
+            thread.start();
+            val thread2 = new Thread(this::printValue);
+            thread2.start();
             try {
                 loopCountLatch.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
             stopped.set(true);
+            thread.interrupt();
+            thread2.interrupt();
         }
 
         private synchronized void changeValueAndPrint() {
@@ -92,19 +97,23 @@ public class Launcher {
         private int value = 0;
 
         public void start() {
-            new Thread(this::changeValueAndPrint).start();
+            val thread = new Thread(this::changeValueAndPrint);
+            thread.start();
             try {
                 startLatch.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            new Thread(this::printValue).start();
+            val thread2 = new Thread(this::printValue);
+            thread2.start();
             try {
                 loopCountLatch.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
             stopped.set(true);
+            thread.interrupt();
+            thread2.interrupt();
         }
 
         private void changeValueAndPrint() {
