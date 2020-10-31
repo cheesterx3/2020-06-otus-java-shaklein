@@ -28,9 +28,9 @@ public class Launcher {
         private int value = 0;
 
         public void start() {
-            val thread = new Thread(this::changeValueAndPrint);
+            val thread = new Thread(() -> changeValueAndPrint(true));
             thread.start();
-            val thread2 = new Thread(this::printValue);
+            val thread2 = new Thread(() -> changeValueAndPrint(false));
             thread2.start();
             try {
                 loopCountLatch.await();
@@ -42,35 +42,19 @@ public class Launcher {
             thread2.interrupt();
         }
 
-        private synchronized void changeValueAndPrint() {
-            int increment = 1;
+        private synchronized void changeValueAndPrint(boolean shouldChange) {
+            int increment = shouldChange ? 1 : 0;
             try {
                 while (!stopped.get()) {
-                    while (reversed)
+                    while (reversed == shouldChange) {
                         wait();
+                    }
                     if (!stopped.get()) {
                         value += increment;
                         if (value == MAX_VALUE || value + increment == 0) increment *= -1;
+                        if (value == MAX_VALUE && !shouldChange) loopCountLatch.countDown();
                         log.info("Value is {}", value);
-                        reversed = true;
-                        sleep();
-                        notifyAll();
-                    }
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        private synchronized void printValue() {
-            try {
-                while (!stopped.get()) {
-                    while (!reversed)
-                        wait();
-                    if (!stopped.get()) {
-                        log.info("Value is {}", value);
-                        if (value == MAX_VALUE) loopCountLatch.countDown();
-                        reversed = false;
+                        reversed = shouldChange;
                         sleep();
                         notifyAll();
                     }
