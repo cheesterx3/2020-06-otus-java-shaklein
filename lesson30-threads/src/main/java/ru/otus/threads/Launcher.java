@@ -81,14 +81,14 @@ public class Launcher {
         private int value = 0;
 
         public void start() {
-            val thread = new Thread(this::changeValueAndPrint);
+            val thread = new Thread(() -> changeValueAndPrint(true));
             thread.start();
             try {
                 startLatch.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            val thread2 = new Thread(this::printValue);
+            val thread2 = new Thread(() -> changeValueAndPrint(false));
             thread2.start();
             try {
                 loopCountLatch.await();
@@ -100,24 +100,15 @@ public class Launcher {
             thread2.interrupt();
         }
 
-        private void changeValueAndPrint() {
-            int increment = 1;
+        private void changeValueAndPrint(boolean shouldChange) {
+            int increment = shouldChange ? 1 : 0;
             startLatch.countDown();
             while (!stopped.get()) {
                 synchronized (this) {
                     value += increment;
                     if (value == MAX_VALUE || value + increment == 0) increment *= -1;
+                    if (value == MAX_VALUE && !shouldChange) loopCountLatch.countDown();
                     log.info("Value is {}", value);
-                }
-                sleep();
-            }
-        }
-
-        private void printValue() {
-            while (!stopped.get()) {
-                synchronized (this) {
-                    log.info("Value is {}", value);
-                    if (value == MAX_VALUE) loopCountLatch.countDown();
                 }
                 sleep();
             }
