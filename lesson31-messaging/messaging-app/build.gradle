@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.3.1.RELEASE'
+}
+
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
+
+dependencies {
+    compileOnly("org.projectlombok:lombok:${Versions.lombok}")
+    annotationProcessor("org.projectlombok:lombok:${Versions.lombok}")
+
+    implementation project(':lesson31-messaging:message-system')
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+
+    implementation("org.webjars:webjars-locator-core")
+    implementation("org.webjars:sockjs-client:${Versions.sockjs}")
+    implementation("org.webjars:stomp-websocket:${Versions.stomp}")
+    implementation("org.webjars:bootstrap:${Versions.bootstrap}")
+
+    implementation("com.h2database:h2")
+    implementation("org.hibernate:hibernate-core")
+    implementation("org.reflections:reflections:${Versions.reflections}")
+    implementation('org.flywaydb:flyway-core')
+    implementation("ch.qos.logback:logback-classic")
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.with {
+        encoding = 'UTF-8'
+    }
+}

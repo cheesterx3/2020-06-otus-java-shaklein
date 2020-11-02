@@ -1,0 +1,13 @@
+insert into addresses(id, street) VALUES (1, 'ул. Ленина');
+insert into addresses(id, street) VALUES (2, 'пр-т Постышева');
+insert into addresses(id, street) VALUES (3, 'пл. Кукуева');
+insert into addresses(id, street) VALUES (4, 'б-р Коровина');
+insert into users(id, name, address_id) VALUES (1, 'Иванов',1);
+insert into users(id, name, address_id) VALUES (2, 'Петров',2);
+insert into users(id, name, address_id) VALUES (3, 'Сидоров',3);
+insert into users(id, name, address_id) VALUES (4, 'Молчанов',4);
+insert into phones(number, user_id) VALUES ('00-0000-0',1);
+insert into phones(number, user_id) VALUES ('00-0000-1',1);
+insert into phones(number, user_id) VALUES ('12-0000-1',2);
+insert into phones(number, user_id) VALUES ('12-4322-1',3);
+insert into phones(number, user_id) VALUES ('12-4354-1',3);

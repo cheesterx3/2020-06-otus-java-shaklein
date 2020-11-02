@@ -8,6 +8,9 @@ public final class Versions {
     public static final String freemarker = "2.3.30";
     public static final String reflections = "0.9.11";
     public static final String lombok = "1.18.12";
+    public static final String sockjs = "1.1.2";
+    public static final String stomp = "2.3.3-1";
+    public static final String bootstrap = "4.4.1-1";
 
 
     private Versions() {
