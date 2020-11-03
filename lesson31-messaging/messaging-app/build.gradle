@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.3.1.RELEASE'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
 }
 
 sourceCompatibility = JavaVersion.VERSION_14
@@ -12,6 +12,8 @@ dependencies {
 
     implementation project(':lesson31-messaging:message-system')
     implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:sockjs-client:${Versions.sockjs}")
@@ -19,8 +21,6 @@ dependencies {
     implementation("org.webjars:bootstrap:${Versions.bootstrap}")
 
     implementation("com.h2database:h2")
-    implementation("org.hibernate:hibernate-core")
-    implementation("org.reflections:reflections:${Versions.reflections}")
     implementation('org.flywaydb:flyway-core')
     implementation("ch.qos.logback:logback-classic")
 }

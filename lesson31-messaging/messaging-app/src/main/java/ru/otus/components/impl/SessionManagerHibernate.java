@@ -2,21 +2,25 @@ package ru.otus.components.impl;
 
 import lombok.val;
 import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import ru.otus.components.SessionManager;
 import ru.otus.services.impl.SessionManagerException;
 
+import javax.persistence.EntityManagerFactory;
+
 @Component
+@DependsOn("flyway")
 public class SessionManagerHibernate implements SessionManager {
 
     private final SessionFactory sessionFactory;
     private DatabaseSessionHibernate databaseSession;
 
-    public SessionManagerHibernate(SessionFactory sessionFactory) {
-        if (sessionFactory == null) {
+    public SessionManagerHibernate(EntityManagerFactory entityManagerFactory) {
+        if (entityManagerFactory == null) {
             throw new SessionManagerException("SessionFactory is null");
         }
-        this.sessionFactory = sessionFactory;
+        this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
     }
 
     @Override
