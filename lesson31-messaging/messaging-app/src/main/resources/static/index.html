@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Server WebSocket time</title>
+    <meta charset="UTF-8"/>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+
+    <script type="text/JavaScript">
+        let stompClient = null;
+
+        function connect() {
+            stompClient = Stomp.over(new SockJS('/gs-guide-websocket'));
+            stompClient.connect({}, (frame) => {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/response', (user) => document.getElementById("result").innerHTML = user.body);
+                stompClient.subscribe('/topic/saveResponse', (user) => addUser(JSON.parse(user.body)));
+            });
+        }
+
+        function fillUsers(users) {
+            let rows = users
+                .map(user => {
+                    let tds = "<td>" + user.name + "</td>" +
+                        "<td>" + user.address + "</td>" +
+                        "<td>" + user.phones + "</td>";
+                    return "<tr>" + tds + "</tr>";
+                })
+                .join("");
+            $('#users tbody').append(rows);
+        }
+
+        function addUser(user) {
+            let data = "<tr></tr><td>" + user.name + "</td>" +
+                "<td>" + user.address + "</td>" +
+                "<td>" + user.phones + "</td></tr>";
+            $('#users tbody').append(data);
+        }
+
+        function getUsers() {
+            const url = "/api/users";
+            fetch(url)
+                .then(resp => resp.json())
+                .then(users => fillUsers(users));
+        }
+
+        const sendRequest = () => stompClient.send("/app/request/" + $("#userId").val(), {}, JSON.stringify({}))
+        const saveRequest = () => stompClient.send("/app/request", {}, JSON.stringify({
+            'name': $('#user-name').val(),
+            'address': $('#user-address').val(),
+            'phones': $('#user-phones').val()
+        }))
+
+        $(function () {
+            $("form").on('submit', (event) => {
+                event.preventDefault();
+            });
+            $("#send").click(sendRequest);
+            $("#save").click(saveRequest);
+            connect();
+            getUsers();
+        });
+    </script>
+</head>
+<body>
+<form>
+    <input id="userId"/>
+    <button id="send" type="submit">Query</button>
+</form>
+<div id="result"></div>
+<form id="create-form" accept-charset="utf-8">
+    <h1>New User:</h1>
+    <div class="row">
+        <label for="user-name">Имя:</label>
+        <input id="user-name" name="name" type="text"/>
+        <label for="user-address">Адрес:</label>
+        <input id="user-address" name="address" type="text"/>
+        <label for="user-phones">Телефоны (через ,):</label>
+        <input id="user-phones" name="phones" type="text"/>
+    </div>
+
+    <div class="row">
+        <button id="save" type="submit">Save</button>
+    </div>
+</form>
+<table id="users">
+    <thead>
+    <tr>
+        <th style="width: 150px">Имя</th>
+        <th style="width: 300px">Адрес</th>
+        <th>Телефоны</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+</body>
+
+</html>
