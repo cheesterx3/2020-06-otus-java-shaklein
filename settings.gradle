@@ -24,3 +24,10 @@ include 'lesson26-spring'
 include 'lesson30-threads'
 include 'lesson31-messaging:messaging-app'
 include 'lesson31-messaging:message-system'
+
+include 'lesson32-multipro:message-system'
+include 'lesson32-multipro:frontend-app'
+include 'lesson32-multipro:backend-app'
+include 'lesson32-multipro:message-system-app'
+
+
