@@ -14,7 +14,7 @@ dependencies {
     compileOnly("org.apache.tomcat:annotations-api:6.0.53")
     compileOnly("org.projectlombok:lombok:${Versions.lombok}")
     annotationProcessor("org.projectlombok:lombok:${Versions.lombok}")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter")
 
     implementation project(':lesson32-multipro:message-system')
     implementation("ch.qos.logback:logback-classic")
