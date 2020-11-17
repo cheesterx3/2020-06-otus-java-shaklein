@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+}
+
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
+
+dependencies {
+    compileOnly("org.projectlombok:lombok:${Versions.lombok}")
+    annotationProcessor("org.projectlombok:lombok:${Versions.lombok}")
+
+    implementation project(':lesson32-multipro:message-system')
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    implementation("com.h2database:h2")
+    implementation('org.flywaydb:flyway-core')
+    implementation("ch.qos.logback:logback-classic")
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.with {
+        encoding = 'UTF-8'
+    }
+}

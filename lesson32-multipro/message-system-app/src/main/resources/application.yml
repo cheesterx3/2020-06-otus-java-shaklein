@@ -1,0 +1,6 @@
+app:
+  frontendServiceName: frontendService
+  backendServiceName: backendService
+  rmiPort: 1099
+  rmiService: UserService
+  grpcPort: 8090

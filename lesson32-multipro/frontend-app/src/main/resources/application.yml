@@ -1,0 +1,6 @@
+server:
+  port: 8081
+
+app:
+  grpcPort: 8090
+
