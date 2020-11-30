@@ -8,6 +8,9 @@ import javax.management.openmbean.CompositeData;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /*
 О формате логов
@@ -43,36 +46,68 @@ http://openjdk.java.net/jeps/158
 */
 
 public class GcDemo {
+    private static final Map<GarbageCollectorMXBean, ComputeInfo> map = new ConcurrentHashMap<>();
+
     public static void main(String... args) throws Exception {
         System.out.println("Starting pid: " + ManagementFactory.getRuntimeMXBean().getName());
-        //switchOnMonitoring();
+        switchOnMonitoring();
         long beginTime = System.currentTimeMillis();
         int loopCounter = 1000;
-        Benchmark mbean = new Benchmark(loopCounter, 1_000_000);
-        mbean.run();
+        Benchmark mbean = new Benchmark(loopCounter, 5_000_000, false);
+        try {
+            mbean.run();
+        } catch (OutOfMemoryError e) {
+            System.out.println("OOOPS OOM");
+        }
 
-        System.out.println("time:" + (System.currentTimeMillis() - beginTime) / 1000);
+        System.out.println("time:" + (System.currentTimeMillis() - beginTime));
+        System.out.println(map.entrySet().stream().map(entry -> entry.getKey().getName() + " : " + entry.getValue().toString()).collect(Collectors.joining("\n")));
     }
 
     private static void switchOnMonitoring() {
         List<GarbageCollectorMXBean> gcbeans = ManagementFactory.getGarbageCollectorMXBeans();
+
         for (GarbageCollectorMXBean gcbean : gcbeans) {
             System.out.println("GC name:" + gcbean.getName());
             NotificationEmitter emitter = (NotificationEmitter) gcbean;
+            map.put(gcbean, new ComputeInfo(Integer.MAX_VALUE, 0, 0, 0));
             NotificationListener listener = (notification, handback) -> {
                 if (notification.getType().equals(GarbageCollectionNotificationInfo.GARBAGE_COLLECTION_NOTIFICATION)) {
                     GarbageCollectionNotificationInfo info = GarbageCollectionNotificationInfo.from((CompositeData) notification.getUserData());
-                    String gcName = info.getGcName();
-                    String gcAction = info.getGcAction();
-                    String gcCause = info.getGcCause();
-
-                    long startTime = info.getGcInfo().getStartTime();
                     long duration = info.getGcInfo().getDuration();
-
-                    System.out.println("start:" + startTime + " Name:" + gcName + ", action:" + gcAction + ", gcCause:" + gcCause + "(" + duration + " ms)");
+                    map.computeIfPresent(gcbean, (bean, computeInfo) -> computeInfo.add(duration));
                 }
             };
             emitter.addNotificationListener(listener, null, null);
         }
+    }
+
+    private static final class ComputeInfo {
+        private final long min;
+        private final long max;
+        private final long count;
+        private final long duration;
+
+        public ComputeInfo(long min, long max, long count, long duration) {
+            this.min = min;
+            this.max = max;
+            this.count = count;
+            this.duration = duration;
+        }
+
+        @Override
+        public String toString() {
+            return "ComputeInfo{" +
+                    "min=" + min +
+                    ", max=" + max +
+                    ", count=" + count +
+                    ", duration=" + duration +
+                    '}';
+        }
+
+        ComputeInfo add(long duration) {
+            return new ComputeInfo(Math.min(duration, min), Math.max(max, duration), count + 1, this.duration + duration);
+        }
+
     }
 }
