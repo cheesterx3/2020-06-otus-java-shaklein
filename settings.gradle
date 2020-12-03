@@ -11,6 +11,7 @@ rootProject.name = 'otus-java'
 include 'hw01-gradle'
 include 'lesson2-generics'
 include 'lesson6-reflection'
+include 'lesson8-gc'
 include 'lesson10-byteCodes'
 include 'lesson12-solid'
 include 'lesson14-patterns'
@@ -29,5 +30,4 @@ include 'lesson32-multipro:message-system'
 include 'lesson32-multipro:frontend-app'
 include 'lesson32-multipro:backend-app'
 include 'lesson32-multipro:message-system-app'
-
 
